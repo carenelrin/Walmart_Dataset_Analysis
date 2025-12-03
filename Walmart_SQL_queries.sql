@@ -120,3 +120,31 @@ JOIN revenue_2023 AS r2023 ON r2022.branch = r2023.branch
 WHERE r2022.revenue > r2023.revenue
 ORDER BY revenue_decrease_ratio DESC
 LIMIT 5;
+
+-- Q.10 Which product categories have the highest average profit margin, and how does this vary across branches?
+SELECT 
+    branch,
+    category,
+    AVG(profit_margin) AS avg_profit_margin
+FROM walmart
+GROUP BY branch, category
+ORDER BY avg_profit_margin DESC;
+
+-- Q.11 What is the average cart value (average total per transaction) for each branch?
+SELECT 
+    branch,
+    AVG(total) AS avg_cart_value
+FROM walmart
+GROUP BY branch
+ORDER BY branch ASC;
+
+-- Q.12 What percentage of total revenue does each category contribute?
+
+SELECT 
+    category,
+    ROUND( SUM(total), 2 ) AS category_revenue,
+    ROUND( (SUM(total) / (SELECT SUM(total) FROM walmart)) * 100 , 2 ) AS revenue_percentage
+FROM walmart
+GROUP BY category
+ORDER BY revenue_percentage DESC;
+
